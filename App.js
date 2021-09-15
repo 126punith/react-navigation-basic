@@ -1,21 +1,109 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { StyleSheet, View, Button, Text } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// --- Main screens ---
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+
+const MainNavigator = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Feed" component={FeedScreen} />
+      <Tab.Screen name="Catalog" component={CatalogScreen} />
+      <Tab.Screen name="Account" component={AccountScreen} />
+    </Tab.Navigator>
+  );
+};
+
+const HomeScreen = () => {
+  return (
+    <View style={styles.layout}>
+      <Text style={styles.title}>Home Screen</Text>
     </View>
   );
-}
+};
+
+const AccountScreen = () => {
+  return (
+    <View style={styles.layout}>
+      <Text style={styles.title}>Account Screen</Text>
+    </View>
+  );
+};
+
+const FeedScreen = () => {
+  return (
+    <View style={styles.layout}>
+      <Text style={styles.title}>Feed Screen</Text>
+    </View>
+  );
+};
+
+const CatalogScreen = () => {
+  return (
+    <View style={styles.layout}>
+      <Text style={styles.title}>Catalog Screen</Text>
+    </View>
+  );
+};
+// --- Onboarding screens ---
+const Stack = createStackNavigator();
+
+const SignInScreen = (props) => {
+  return (
+    <View style={styles.layout}>
+      <Text style={styles.title}>Sign in screen</Text>
+      <Button
+        title="SignUp"
+        onPress={() => {
+          props.navigation.navigate("SignUp");
+        }}
+      />
+    </View>
+  );
+};
+
+const SignUpScreen = () => {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.layout}>
+      <Text style={styles.title}>Sign up screen</Text>
+      <Button
+        title="Continue"
+        onPress={() => {
+          navigation.navigate("Main");
+        }}
+      />
+    </View>
+  );
+};
+// --- App ---
+
+const App = () => (
+  <NavigationContainer>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="Main" component={MainNavigator} />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+export default App;
 
 const styles = StyleSheet.create({
-  container: {
+  layout: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    padding: 8,
+  },
+  title: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
